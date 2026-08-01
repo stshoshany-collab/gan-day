@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>היום שלי בגן 🌟</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Varela+Round&family=Comfortaa:wght@300;400;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+:root{
+  --sky:#FEFDF8;
+  --sun:#FFD93D;
+  --mint:#6BCB77;
+  --coral:#FF6B6B;
+  --peach:#FFB347;
+  --lilac:#C77DFF;
+  --teal:#4CC9F0;
+  --pink:#FF85A1;
+  --white:#FFFFFF;
+  --dark:#2D3561;
+  --soft-blue:#EBF4FF;
+  --soft-green:#F0FFF4;
+  --soft-yellow:#FFFBEB;
+  --soft-pink:#FFF0F5;
+  --soft-purple:#F5F0FF;
+}
+body{
+  font-family:'Varela Round',sans-serif;
+  background:var(--sky);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+.screen{display:none;}
+.screen.active{display:block;}
+/* ===== WELCOME ===== */
+#welcome{
+  min-height:100vh;
+  display:none;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:30px 20px;text-align:center;
+  background:linear-gradient(170deg,#FFF9F0 0%,#E8F7FF 60%,#F0FFF4 100%);
+}
+#welcome.active{display:flex;}
+.welcome-sun{
+  font-size:90px;
+  animation:sunSpin 4s ease-in-out infinite;
+  margin-bottom:10px;
+  filter:drop-shadow(0 6px 20px rgba(255,210,60,0.4));
+}
+@keyframes sunSpin{0%,100%{transform:rotate(-8deg) scale(1);}50%{transform:rotate(8deg) scale(1.08);}}
+.welcome-title{
+  font-family:'Comfortaa',cursive;
+  font-size:clamp(32px,7vw,54px);
+  font-weight:300;
+  color:var(--dark);
+  line-height:1.3;
+  margin-bottom:8px;
+  letter-spacing:2px;
+}
+.welcome-title strong{
+  font-weight:700;
+  background:linear-gradient(135deg,#2D3561,#4CC9F0);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  display:inline-block;
+}
+.welcome-sub{font-size:clamp(17px,3.5vw,24px);color:#6B7280;margin-bottom:28px;line-height:1.5;}
+.btn-big{
+  font-family:'Fredoka One',cursive;
+  font-size:clamp(24px,5vw,34px);color:white;
+  background:linear-gradient(135deg,#6BCB77,#4CC9F0);
+  border:none;border-radius:60px;
+  padding:18px 56px;cursor:pointer;
+  box-shadow:0 10px 35px rgba(107,203,119,0.45);
+  transition:all 0.2s;
+}
+.btn-big:active{transform:scale(0.95);}
+/* ===== NAV BAR ===== */
+.nav-bar{
+  position:sticky;top:0;z-index:50;
+  background:white;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 16px;
+  box-shadow:0 3px 16px rgba(0,0,0,0.09);
+}
+.nav-name{font-family:'Fredoka One',cursive;font-size:22px;color:var(--dark);display:flex;align-items:center;gap:8px;}
+.nav-stars{font-family:'Fredoka One',cursive;font-size:22px;color:#F59E0B;display:flex;align-items:center;gap:5px;}
+/* TABS */
+.tabs{
+  display:flex;gap:0;
+  background:#F3F4F6;border-radius:16px;
+  padding:5px;margin:14px 14px 0;
+}
+.tab{
+  flex:1;font-family:'Fredoka One',cursive;font-size:clamp(13px,3vw,17px);
+  color:#9CA3AF;background:transparent;border:none;
+  border-radius:12px;padding:10px 4px;cursor:pointer;
+  transition:all 0.2s;
+}
+.tab.active{background:white;color:var(--dark);box-shadow:0 2px 10px rgba(0,0,0,0.1);}
+/* ===== TAB CONTENT ===== */
+.tab-content{display:none;padding:14px;}
+.tab-content.active{display:block;}
+/* ===== PROGRESS BAR ===== */
+.progress-card{
+  background:white;border-radius:22px;padding:14px 18px;
+  box-shadow:0 3px 16px rgba(0,0,0,0.07);margin-bottom:14px;
+}
+.progress-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.progress-label{font-size:14px;color:#9CA3AF;}
+.progress-station{font-family:'Fredoka One',cursive;font-size:16px;color:var(--dark);}
+.prog-track{background:#F3F4F6;border-radius:20px;height:16px;overflow:hidden;}
+.prog-fill{
+  height:100%;border-radius:20px;
+  background:linear-gradient(90deg,#6BCB77,#4CC9F0);
+  transition:width 0.9s cubic-bezier(0.34,1.56,0.64,1);
+  position:relative;overflow:hidden;
+}
+.prog-fill::after{
+  content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.5),transparent);
+  animation:shimmer 2.5s infinite;
+}
+@keyframes shimmer{0%{left:-100%;}100%{left:100%;}}
+/* PATH CSS REMOVED */
+/* ===== STATION CARD ===== */
+.station-card{
+  border-radius:28px;
+  box-shadow:0 8px 36px rgba(0,0,0,0.13);
+  overflow:hidden;margin-bottom:18px;
+  animation:slideUp .45s cubic-bezier(0.34,1.56,0.64,1);
+  border:3px solid transparent;
+}
+@keyframes slideUp{from{transform:translateY(32px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+/* Coloured hero banner at top of each station */
+.station-banner{
+  padding:22px 20px 18px;
+  display:flex;align-items:center;gap:16px;
+  position:relative;overflow:hidden;
+}
+.station-banner::after{
+  content:'';position:absolute;bottom:-18px;left:0;right:0;height:36px;
+  background:white;border-radius:50% 50% 0 0 / 100% 100% 0 0;
+}
+.st-emoji-wrap{
+  width:80px;height:80px;border-radius:50%;
+  background:rgba(255,255,255,0.25);
+  display:flex;align-items:center;justify-content:center;
+  font-size:44px;flex-shrink:0;
+  box-shadow:0 4px 20px rgba(0,0,0,0.15);
+  border:3px solid rgba(255,255,255,0.5);
+}
+.st-info{flex:1;}
+.st-num{
+  font-size:11px;color:rgba(255,255,255,0.75);
+  letter-spacing:2px;text-transform:uppercase;font-weight:bold;margin-bottom:3px;
+}
+.st-name{
+  font-family:'Fredoka One',cursive;
+  font-size:clamp(24px,5.5vw,36px);
+  color:white;line-height:1.1;
+  text-shadow:0 2px 8px rgba(0,0,0,0.15);
+}
+.st-sub{font-size:14px;color:rgba(255,255,255,0.85);margin-top:4px;}
+/* white body of card */
+.station-body{
+  background:white;
+  padding-top:20px;
+}
+/* Section label inside white body */
+.section-label{
+  font-family:'Fredoka One',cursive;font-size:15px;
+  color:var(--dark);opacity:.6;
+  text-align:center;margin-bottom:10px;letter-spacing:.5px;
+}
+/* ENTRY STEPS */
+.entry-steps{padding:0 16px 16px;}
+.step-title{font-family:'Fredoka One',cursive;font-size:15px;color:var(--dark);margin-bottom:10px;text-align:center;opacity:.7;letter-spacing:.5px;}
+.section-divider{height:1px;background:linear-gradient(90deg,transparent,#E5E7EB,transparent);margin:4px 16px 18px;}
+.step-item{
+  display:flex;align-items:center;gap:12px;
+  background:var(--soft-green);border-radius:16px;padding:13px 14px;margin-bottom:8px;
+  border:2px solid transparent;cursor:pointer;transition:all 0.2s;
+}
+.step-item:active{transform:scale(0.97);}
+.step-item.checked{border-color:var(--mint);background:#DCFCE7;}
+.step-emoji{font-size:28px;flex-shrink:0;}
+.step-text{font-size:15px;color:var(--dark);font-weight:bold;flex:1;}
+.step-check{
+  width:28px;height:28px;border-radius:50%;border:3px solid #D1D5DB;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  transition:all 0.2s;font-size:14px;font-weight:bold;color:white;
+}
+.step-item.checked .step-check{background:var(--mint);border-color:var(--mint);}
+/* choice after entry */
+.entry-choice{padding:0 16px 16px;}
+.entry-choice-title{font-family:'Fredoka One',cursive;font-size:15px;color:var(--dark);margin-bottom:10px;text-align:center;}
+.entry-choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.ec-item{
+  background:var(--soft-blue);border-radius:16px;padding:14px 10px;
+  text-align:center;cursor:pointer;border:3px solid transparent;transition:all 0.2s;
+}
+.ec-item:active{transform:scale(0.95);}
+.ec-item.selected{border-color:var(--teal);background:#E0F7FE;}
+.ec-emoji{font-size:34px;margin-bottom:5px;}
+.ec-text{font-size:12px;font-weight:bold;color:var(--dark);line-height:1.3;}
+/* ACTIVITY CHOICE in station */
+.choice-wrap{padding:0 16px 14px;}
+.choice-title{font-family:'Fredoka One',cursive;font-size:15px;color:var(--dark);margin-bottom:10px;text-align:center;}
+.choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.choice-item{
+  background:var(--soft-blue);border-radius:16px;padding:14px 10px;
+  text-align:center;cursor:pointer;border:3px solid transparent;transition:all 0.2s;
+}
+.choice-item:active{transform:scale(0.95);}
+.choice-item.selected{border-color:var(--teal);background:#E0F7FE;}
+.choice-emoji{font-size:32px;margin-bottom:5px;}
+.choice-text{font-size:12px;font-weight:bold;color:var(--dark);line-height:1.3;}
+/* INFO PILLS */
+.pills-wrap{display:flex;flex-wrap:wrap;gap:8px;padding:0 16px 14px;}
+.pill{display:flex;align-items:center;gap:5px;padding:8px 13px;border-radius:30px;font-size:13px;font-weight:bold;}
+.pill.goal{background:#EEF2FF;color:#4F46E5;}
+.pill.reg{background:var(--soft-green);color:#15803D;}
+.pill.reinf{background:var(--soft-yellow);color:#B45309;}
+/* BACK TO MENU BTN */
+.btn-back{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  width:calc(100% - 32px);margin:0 16px 12px;
+  font-family:'Varela Round',sans-serif;
+  font-size:15px;color:#9CA3AF;
+  background:transparent;border:2px solid #E5E7EB;
+  border-radius:14px;padding:11px;cursor:pointer;
+  transition:all 0.2s;
+}
+.btn-back:active{background:#F9FAFB;transform:scale(0.97);}
+/* ACTION BTN */
+.btn-action{
+  width:calc(100% - 32px);margin:0 16px 18px;
+  font-family:'Fredoka One',cursive;font-size:clamp(20px,4vw,26px);color:white;
+  border:none;border-radius:18px;padding:16px;cursor:pointer;
+  transition:all 0.2s;display:block;
+}
+.btn-action:active{transform:scale(0.97);}
+/* ===== CHOOSE TAB ===== */
+.choose-card{
+  background:white;border-radius:26px;padding:22px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.08);
+}
+.choose-h{font-family:'Fredoka One',cursive;font-size:clamp(20px,5vw,28px);color:var(--dark);text-align:center;margin-bottom:5px;}
+.choose-p{font-size:15px;color:#6B7280;text-align:center;margin-bottom:18px;}
+.activity-list{display:flex;flex-direction:column;gap:10px;}
+.act-item{
+  display:flex;align-items:center;gap:12px;
+  background:var(--soft-green);border-radius:16px;padding:14px 16px;
+  cursor:pointer;border:2px solid transparent;transition:all 0.2s;
+}
+.act-item:active{transform:scale(0.97);}
+.act-item.chosen{border-color:var(--mint);background:#DCFCE7;}
+.act-emoji{font-size:32px;flex-shrink:0;}
+.act-text{font-size:16px;font-weight:bold;color:var(--dark);flex:1;}
+.act-sub{font-size:12px;color:#6B7280;margin-top:2px;}
+.chosen-banner{
+  display:none;margin-top:16px;background:var(--soft-green);
+  border-radius:18px;padding:16px;text-align:center;
+}
+.chosen-banner.show{display:block;}
+.chosen-banner-e{font-size:42px;margin-bottom:4px;}
+.chosen-banner-t{font-family:'Fredoka One',cursive;font-size:20px;color:var(--dark);}
+.chosen-banner-v{font-size:17px;color:#15803D;font-weight:bold;margin-top:3px;}
+.chosen-banner-s{font-size:13px;color:#6B7280;margin-top:5px;}
+/* ===== WHEN TAB ===== */
+.when-title{
+  font-family:'Fredoka One',cursive;font-size:clamp(22px,5vw,30px);
+  color:var(--dark);text-align:center;margin-bottom:5px;
+}
+.when-p{font-size:15px;color:#6B7280;text-align:center;margin-bottom:16px;}
+.when-cards{display:flex;flex-direction:column;gap:12px;}
+.when-card{
+  border-radius:22px;overflow:hidden;
+  box-shadow:0 4px 18px rgba(0,0,0,0.08);
+  transition:transform 0.15s;
+}
+.when-header{
+  display:flex;align-items:center;gap:12px;padding:16px 18px;cursor:pointer;
+}
+.when-big-e{font-size:44px;flex-shrink:0;}
+.when-label-wrap{flex:1;}
+.when-label{font-family:'Fredoka One',cursive;font-size:clamp(17px,4vw,22px);color:var(--dark);}
+.when-sub-label{font-size:13px;color:#6B7280;margin-top:2px;}
+.when-arr{font-size:20px;color:#9CA3AF;transition:transform 0.3s;flex-shrink:0;}
+.when-card.open .when-arr{transform:rotate(90deg);}
+.when-body{display:none;padding:0 14px 14px;}
+.when-card.open .when-body{display:block;}
+.when-opt{
+  display:flex;align-items:center;gap:12px;
+  background:rgba(255,255,255,0.85);border-radius:16px;
+  padding:12px 14px;margin-bottom:8px;cursor:pointer;
+  border:2px solid transparent;transition:all 0.2s;
+}
+.when-opt:active{transform:scale(0.97);}
+.when-opt.chosen{border-color:var(--mint);background:#DCFCE7;}
+.when-opt-e{font-size:28px;flex-shrink:0;}
+.when-opt-t{font-size:15px;font-weight:bold;color:var(--dark);}
+.when-opt-s{font-size:12px;color:#6B7280;margin-top:2px;}
+/* ===== REWARD OVERLAY ===== */
+.overlay{
+  position:fixed;inset:0;z-index:200;
+  background:rgba(0,0,0,0.45);backdrop-filter:blur(6px);
+  display:none;align-items:center;justify-content:center;padding:20px;
+}
+.overlay.show{display:flex;}
+.reward-box{
+  background:white;border-radius:34px;padding:32px 24px;
+  text-align:center;max-width:370px;width:100%;
+  animation:popIn .45s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes popIn{from{transform:scale(0.4) rotate(-8deg);opacity:0;}to{transform:scale(1) rotate(0);opacity:1;}}
+.rew-emojis{font-size:58px;margin-bottom:8px;animation:bounce 1s ease-in-out infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);}}
+.rew-title{font-family:'Fredoka One',cursive;font-size:32px;color:var(--dark);margin-bottom:6px;}
+.rew-msg{font-size:17px;color:#6B7280;margin-bottom:14px;line-height:1.5;}
+.rew-stars{font-size:38px;letter-spacing:5px;margin-bottom:14px;}
+.rew-badge{
+  background:linear-gradient(135deg,#FFF9C4,#FFF3CD);
+  border-radius:16px;padding:12px;margin-bottom:20px;
+  font-size:16px;color:#92400E;font-weight:bold;
+  border:2px dashed #FCD34D;
+}
+.btn-next-rew{
+  font-family:'Fredoka One',cursive;font-size:22px;color:white;
+  background:linear-gradient(135deg,#6BCB77,#4CC9F0);
+  border:none;border-radius:50px;padding:14px 44px;cursor:pointer;
+  box-shadow:0 8px 25px rgba(76,201,240,0.4);transition:all 0.2s;
+}
+.btn-next-rew:active{transform:scale(0.95);}
+/* ===== WIN ===== */
+#win{
+  min-height:100vh;display:none;flex-direction:column;
+  align-items:center;justify-content:center;padding:30px;text-align:center;
+  background:linear-gradient(160deg,#FFF9F0,#E8F7FF,#F0FFF4);
+}
+#win.active{display:flex;}
+.win-trophy{font-size:100px;animation:bounce 1.2s ease-in-out infinite;margin-bottom:12px;}
+.win-h{font-family:'Fredoka One',cursive;font-size:clamp(40px,9vw,68px);color:var(--dark);line-height:1;}
+.win-p{font-size:20px;color:#6B7280;margin:10px 0 20px;line-height:1.5;}
+.win-star-row{font-size:48px;letter-spacing:8px;margin-bottom:24px;}
+.win-prize{
+  background:white;border-radius:28px;padding:22px;
+  box-shadow:0 8px 32px rgba(0,0,0,0.1);margin-bottom:24px;max-width:380px;width:100%;
+}
+.win-prize-t{font-family:'Fredoka One',cursive;font-size:20px;color:var(--dark);margin-bottom:10px;}
+.win-prize-e{font-size:56px;margin-bottom:6px;}
+.win-prize-p{font-size:20px;color:#F59E0B;font-weight:bold;}
+.cp{position:fixed;border-radius:2px;animation:fall 2s ease-in forwards;pointer-events:none;z-index:500;}
+@keyframes fall{0%{transform:translateY(-10px) rotate(0deg);opacity:1;}100%{transform:translateY(110vh) rotate(720deg);opacity:0;}}
+</style>
+</head>
+<body>
+<!-- WELCOME -->
+<div id="welcome" class="screen active">
+  <div class="welcome-sun">🌞</div>
+  <h1 class="welcome-title" id="welcome-title">שלום! 👋</h1>
+  <input id="name-input" type="text" placeholder="שם הילד/ה" style="font-family:'Varela Round',sans-serif;font-size:22px;font-weight:bold;padding:12px 22px;border:3px solid #C5CAE9;border-radius:30px;text-align:center;margin:10px 0 26px;width:min(320px,80vw);outline:none;color:#2D3561;">
+  <p class="welcome-sub">היום נעבור ביחד את כל<br>התחנות של היום בגן ✨</p>
+  <div style="font-size:38px;margin-bottom:24px;animation:bounce 1.5s ease-in-out infinite;">⭐ 🏅 🌟 🏅 ⭐</div>
+  <button class="btn-big" onclick="startGame()">בואו נתחיל! 🚀</button>
+</div>
+<!-- MAIN GAME -->
+<div id="game" class="screen">
+  <div class="nav-bar">
+    <div class="nav-name">🧒 <span id="nav-kid">היום שלי</span></div>
+    <div class="nav-stars">⭐ <span id="star-count">0</span></div>
+  </div>
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('track')">🗺️ המסלול</button>
+    <button class="tab" onclick="switchTab('choose')">🎨 פעילויות</button>
+    <button class="tab" onclick="switchTab('when')">💙 כשקשה</button>
+  </div>
+  <!-- TAB: TRACK -->
+  <div id="tab-track" class="tab-content active">
+    <div class="progress-card">
+      <div class="progress-row">
+        <div class="progress-label">ההתקדמות שלי היום</div>
+        <div class="progress-station" id="prog-text">תחנה 1 / 10</div>
+      </div>
+      <div class="prog-track"><div class="prog-fill" id="prog-bar" style="width:0%"></div></div>
+    </div>
+    <div class="station-card" id="station-card"></div>
+  </div>
+  <!-- TAB: CHOOSE ACTIVITY -->
+  <div id="tab-choose" class="tab-content">
+    <div class="choose-card">
+      <div class="choose-h">מה אני רוצה לעשות? 🎯</div>
+      <div class="choose-p">לחץ על פעילות שאוהב</div>
+      <div class="activity-list" id="activity-list">
+        <div class="act-item" onclick="pickActivity(this,'🎲 משחק ליד שולחן')">
+          <div class="act-emoji">🎲</div>
+          <div><div class="act-text">משחק ליד שולחן</div><div class="act-sub">פאזל, קלפים, לוטו...</div></div>
+        </div>
+        <div class="act-item" onclick="pickActivity(this,'🏃 משחק במרחב הגן')">
+          <div class="act-emoji">🏃</div>
+          <div><div class="act-text">משחק במרחב הגן</div><div class="act-sub">אוהל, בניה, חצר...</div></div>
+        </div>
+        <div class="act-item" onclick="pickActivity(this,'🎨 פעילות יצירה')">
+          <div class="act-emoji">🎨</div>
+          <div><div class="act-text">פעילות יצירה</div><div class="act-sub">ציור, גזירה, דבק...</div></div>
+        </div>
+        <div class="act-item" onclick="pickActivity(this,'🤫 רגע שקט עם הגננת')">
+          <div class="act-emoji">🤫</div>
+          <div><div class="act-text">רגע שקט עם הגננת</div><div class="act-sub">לשבת ביחד, לדבר...</div></div>
+        </div>
+        <div class="act-item" onclick="pickActivity(this,'🌿 פינת ההרגעה')">
+          <div class="act-emoji">🌿</div>
+          <div><div class="act-text">פינת ההרגעה</div><div class="act-sub">נשימות, כרית, שקט...</div></div>
+        </div>
+      </div>
+      <div class="chosen-banner" id="chosen-banner">
+        <div class="chosen-banner-e">🥳</div>
+        <div class="chosen-banner-t">בחרת:</div>
+        <div class="chosen-banner-v" id="chosen-banner-val"></div>
+        <div class="chosen-banner-s">נהדר! לכו לשחק 🎉</div>
+      </div>
+    </div>
+  </div>
+  <!-- TAB: WHEN HARD -->
+  <div id="tab-when" class="tab-content">
+    <div class="when-title">💙 כשקשה לי...</div>
+    <div class="when-p">לחץ על מה שאתה מרגיש</div>
+    <div class="when-cards" id="when-cards"></div>
+  </div>
+</div>
+<!-- WIN -->
+<div id="win" class="screen">
+  <div class="win-trophy">🏆</div>
+  <h1 class="win-h" id="win-h">כל הכבוד! 🎉</h1>
+  <p class="win-p">השלמת את כל<br>תחנות היום בגן!<br>אתה אלוף אמיתי ⭐</p>
+  <div class="win-star-row">⭐⭐⭐⭐⭐</div>
+  <div class="win-prize">
+    <div class="win-prize-t">🎁 הפרס שלך להיום:</div>
+    <div class="win-prize-e">🌟🥇🌟</div>
+    <div class="win-prize-p">מדבקת זהב + בחירה חופשית!</div>
+  </div>
+  <div style="font-size:46px;margin-bottom:22px;animation:bounce 1s ease-in-out infinite;">😄🎊😄</div>
+  <button class="btn-big" style="background:linear-gradient(135deg,#FF6B6B,#FF85A1);box-shadow:0 10px 35px rgba(255,107,107,0.4);" onclick="restartGame()">שחקו שוב 🔄</button>
+</div>
+<!-- REWARD OVERLAY -->
+<div class="overlay" id="overlay">
+  <div class="reward-box">
+    <div class="rew-emojis" id="rew-emojis"></div>
+    <div class="rew-title" id="rew-title"></div>
+    <div class="rew-msg" id="rew-msg"></div>
+    <div class="rew-stars" id="rew-stars"></div>
+    <div class="rew-badge" id="rew-badge"></div>
+    <button class="btn-next-rew" id="btn-next-rew" onclick="nextStation()"></button>
+  </div>
+</div>
+<script>
+const stations = [
+  {
+    name:"כניסה לגן", emoji:"🏁", color:"#FF6B6B",
+    bg:"linear-gradient(135deg,#FF6B6B,#FF9A9A)",
+    sub:"בוקר טוב! היום מתחיל מצוין 🌞",
+    type:"entry",
+    goal:"🎯 כניסה רגועה ושמחה",
+    regulation:"💧 בחירת פעילות / מקום שקט",
+    reinforcement:"בוקר טוב, אני מאוד שמחה לראות אותך!",
+    reward_emojis:"😊🌟😊", reward_msg:"נכנסת לגן בחיוך גדול! אלוף!",
+    action:"נכנסתי לגן! ✅"
+  },
+  {
+    name:"מפגש בוקר", emoji:"🌤️", color:"#FF9F43",
+    bg:"linear-gradient(135deg,#FF9F43,#FFB870)",
+    sub:"יושבים עם כולם ✨",
+    type:"activity",
+    goal:"🎯 ישיבה למשך הזמן שהוגדר",
+    regulation:"💧 תפקיד עוזר מיוחד",
+    reinforcement:"כל הכבוד! השתתפת במפגש לפי הכללים!",
+    reward_emojis:"🌟⭐🌟", reward_msg:"כל הכבוד! השתתפת במפגש לפי הכללים!",
+    action:"הייתי במפגש! ✅"
+  },
+  {
+    name:"פעילות בחירה", emoji:"🧠", color:"#FECA57",
+    bg:"linear-gradient(135deg,#FECA57,#FFD97D)",
+    sub:"זמן ללמוד דברים חדשים 📚",
+    type:"activity",
+    goal:"🎯 אתה משחק בנעימים!",
+    regulation:"💧 בוחרים בין 2 אפשרויות",
+    reinforcement:"שיחקת והתנהגת באופן בוגר ונעים!",
+    reward_emojis:"🧠⭐🧠", reward_msg:"עשית את הפעילות עד הסוף!",
+    action:"שיחקתי בנעימים! ✅"
+  },
+  {
+    name:"הפוגה לגוף ולנפש", emoji:"🪶", color:"#6BCB77",
+    bg:"linear-gradient(135deg,#6BCB77,#8EE4A0)",
+    sub:"נושמים, נרגעים, מרגישים טוב 🌿",
+    type:"regular",
+    goal:"🎯 ויסות חושי ורגשי",
+    regulation:"💧 נשימות עמוקות + שיר שקט",
+    reinforcement:"\"לקחת הפוגה – זה גיבורי!\"",
+    reward_emojis:"🌿💚🌿", reward_msg:"נרגעת יפה! גיבור אמיתי!",
+    action:"נרגעתי! ✅"
+  },
+  {
+    name:"פעילות בחירה", emoji:"🎨", color:"#4CC9F0",
+    bg:"linear-gradient(135deg,#4CC9F0,#74D7F6)",
+    sub:"בוחרים מה שכיף לנו 🎭",
+    type:"activity",
+    goal:"🎯 משחק חופשי ושמח",
+    regulation:"💧 קוביות, יצירה, משחק רגוע",
+    reinforcement:"כמה נעים לראות אותך נהנה עם חברים במשחק!",
+    reward_emojis:"🎨🌈🎨", reward_msg:"כמה נעים לראות אותך נהנה עם חברים במשחק!",
+    action:"שיחקתי בנעימים! ✅"
+  },
+  {
+    name:"ארוחה", emoji:"🍎", color:"#FF85A1",
+    bg:"linear-gradient(135deg,#FF85A1,#FFB3C6)",
+    sub:"אוכלים בנחת ובשיח נעים 😋",
+    type:"regular",
+    goal:"🎯 ישיבה לפי כללים",
+    regulation:"💧 שיח נעים ליד השולחן",
+    reinforcement:"\"דיברת בנחת – אין עליך!\"",
+    reward_emojis:"🍎😋🍎", reward_msg:"אכלת יפה ושוחחת בנעימות!",
+    action:"אכלתי באופן שנעים לי ולאחרים! ✅"
+  },
+  {
+    name:"חצר", emoji:"🌳", color:"#34D399",
+    bg:"linear-gradient(135deg,#34D399,#6EE7B7)",
+    sub:"משחק בחוץ עם חברים 🌞",
+    type:"activity",
+    goal:"🎯 משחק חברתי מהנה",
+    regulation:"💧 תנועה מודרכת ושיתוף",
+    reinforcement:"היו לך רעיונות נהדרים למשחק עם חברים! ושיחקת בנעימים!",
+    reward_emojis:"🌳⚽🌳", reward_msg:"שיחקת בחצר בצורה נהדרת!",
+    action:"שיחקתי בחצר! ✅"
+  },
+  {
+    name:"פינת רוגע", emoji:"💧", color:"#818CF8",
+    bg:"linear-gradient(135deg,#818CF8,#A5B4FC)",
+    sub:"רגע שקט לאחר מאמץ 💜",
+    type:"regular",
+    goal:"🎯 חזרה לרגיעה",
+    regulation:"💧 נשימות + כרית ויסות",
+    reinforcement:"בחרת להירגע – זו היתה בחירה בוגרת וחכמה!",
+    reward_emojis:"💧💜💧", reward_msg:"בחרת להירגע – זו היתה בחירה בוגרת וחכמה!",
+    action:"היה לי שקט ונעים בפינת רוגע! ✅"
+  },
+  {
+    name:"זמן חיזוק", emoji:"🌈", color:"#F59E0B",
+    bg:"linear-gradient(135deg,#F59E0B,#FCD34D)",
+    sub:"אין עליך! התאמצת והגעת לתחנת החיזוק! 🎁",
+    type:"regular",
+    goal:"🎯 חיזוק על כל ההתקדמות",
+    regulation:"💧 בחירה מבין 2 צ'ופרים",
+    reinforcement:"אין עליך! התאמצת והגעת לתחנת החיזוק! ומה תרצה לעשות עכשיו?",
+    reward_emojis:"🌈⭐🌈", reward_msg:"קיבלת את הצ'ופר שלך!",
+    action:"קיבלתי פרס! ✅"
+  },
+  {
+    name:"סיום יום", emoji:"🏆", color:"#FFD93D",
+    bg:"linear-gradient(135deg,#FFD93D,#FFE97D)",
+    sub:"כל הכבוד – סיימת יום שלם! 🎉",
+    type:"regular",
+    goal:"🎯 אני מסכם את היום עם הגננת",
+    regulation:"💧 אני נותן לעצמי מחמאה, הגננת נותנת לי מחמאה",
+    reinforcement:"מדבקת זהב ✨",
+    reward_emojis:"🏆🥇🏆", reward_msg:"עברת בכל תחנות היום של הגן – פעלת בנעימים וכשהיה קשה ידעת לעצור ולתת לעצמך מנוחה או לבקש ממני עזרה!",
+    action:"סיימתי את היום! 🎉"
+  }
+];
+const entryStepsData = [
+  {e:"🤗", t:"נפרדתי מאמא/אבא בנשיקה", key:"farewell"},
+  {e:"😊", t:"אמרתי בוקר טוב לגננת", key:"greet"},
+  {e:"🎯", t:"בחרתי מה אני הולך לעשות", key:"choose"},
+];
+const entryChoicesData = [
+  {e:"🎲", t:"משחק ליד שולחן", s:"פאזל, קלפים, לוטו..."},
+  {e:"🏃", t:"משחק במרחב הגן", s:"אוהל, בנייה, חצר..."},
+  {e:"🎨", t:"פעילות יצירה", s:"ציור, גזירה, דבק..."},
+  {e:"🤫", t:"רגע שקט עם הגננת", s:"לשבת ביחד, לדבר..."},
+  {e:"🌿", t:"פינת ההרגעה", s:"נשימות, כרית, שקט..."},
+];
+const whenData = [
+  {
+    emoji:"🤷", label:"אני לא יודע מה לעשות", sub:"קשה לבחור", color:"#EEF2FF",
+    options:[
+      {e:"🎲", t:"ניגש לפינת המשחקים", s:"בוחרים משחק קצר"},
+      {e:"🖍️", t:"לוקחים דף ועפרונות", s:"מציירים מה שרוצים"},
+      {e:"👩‍🏫", t:"שואלים את הגננת", s:"היא תעזור לבחור"},
+      {e:"🌿", t:"יושבים רגע בשקט", s:"עד שמתחשק משהו"},
+    ]
+  },
+  {
+    emoji:"😔", label:"לא נעים לי עם חברים", sub:"כשיש ריב או עצבנות", color:"#FFF0F5",
+    options:[
+      {e:"🚶", t:"מתרחקים לרגע", s:"נושמים ונרגעים קודם"},
+      {e:"💬", t:"אומרים \"לא נעים לי\"", s:"בלי לצעוק"},
+      {e:"👩‍🏫", t:"מבקשים עזרה מגננת", s:"היא תעזור להסדיר"},
+      {e:"🌿", t:"הולכים לפינת הרגעה", s:"עד שמרגישים טוב"},
+    ]
+  },
+  {
+    emoji:"😴", label:"אני רעב או עייף", sub:"כשהגוף צריך משהו", color:"#FFFBEB",
+    options:[
+      {e:"🍌", t:"לוקחים את האוכל שלי", s:"מהתיק או מהמטבחון"},
+      {e:"💧", t:"שותים כוס מים", s:"מים עוזרים מאוד"},
+      {e:"😴", t:"מבקשים לנוח קצת", s:"על כרית בפינה השקטה"},
+      {e:"👩‍🏫", t:"אומרים לגננת", s:"שהיא תדע ותעזור"},
+    ]
+  },
+  {
+    emoji:"😤", label:"אני כועס או נסער", sub:"כשמרגיש שרוצים להתפרץ", color:"#F5F0FF",
+    options:[
+      {e:"🌬️", t:"נושמים עמוק 3 פעמים", s:"שאפה... ונשיפה..."},
+      {e:"🧸", t:"הולכים לכרית הויסות", s:"לחבוק ולהירגע"},
+      {e:"✍️", t:"מציירים את הרגש", s:"על דף נייר"},
+      {e:"👩‍🏫", t:"ניגשים לגננת", s:"\"אני צריך עזרה\""},
+    ]
+  },
+  {
+    emoji:"❓", label:"משהו אחר...", sub:"כשאני לא יודע להגיד", color:"#F0FFF4",
+    options:[
+      {e:"🤔", t:"עוצרים ומחכים רגע", s:"לפעמים זה עובר"},
+      {e:"✏️", t:"מצייר איך מרגיש", s:"על דף נייר"},
+      {e:"👩‍🏫", t:"ניגשים לגננת", s:"\"יש לי משהו\""},
+      {e:"📞", t:"רוצים לדבר עם אמא", s:"אפשר לבקש"},
+    ]
+  },
+];
+let cur = 0, stars = 0;
+const entryChecked = {};
+let entryChoiceSelected = null;
+function updateWelcomeName(v){
+  const el=document.getElementById('welcome-name');
+  if(el) el.textContent=(v||'').trim();
+}
+function applyKidName(nm){
+  nm=(nm||'').trim();
+  const nav=document.getElementById('nav-kid');
+  const wh=document.getElementById('win-h');
+  if(nm){
+    if(nav) nav.textContent=nm;
+    if(wh) wh.innerHTML='כל הכבוד<br>'+nm+'! 🎉';
+  } else {
+    if(nav) nav.textContent='היום שלי';
+    if(wh) wh.innerHTML='כל הכבוד! 🎉';
+  }
+}
+function startGame(){
+  const nm=(document.getElementById('name-input').value||'').trim();
+  try{ if(nm) localStorage.setItem('kidName',nm); }catch(e){}
+  applyKidName(nm);
+  document.getElementById('welcome').classList.remove('active');
+  document.getElementById('game').classList.add('active');
+  renderStation(); buildWhen();
+}
+window.addEventListener('DOMContentLoaded',function(){
+  try{ const _n=localStorage.getItem('kidName'); if(_n){ const el=document.getElementById('name-input'); if(el){ el.value=_n; updateWelcomeName(_n); } } }catch(e){}
+});
+function switchTab(id){
+  document.querySelectorAll('.tab').forEach((t,i)=>{
+    t.classList.toggle('active',['track','choose','when'][i]===id);
+  });
+  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+}
+function renderPath(){
+  const r1=document.getElementById('path-row1');
+  const r2=document.getElementById('path-row2');
+  if(!r1||!r2) return;
+  r1.innerHTML=''; r2.innerHTML='';
+  stations.slice(0,5).forEach((s,i)=>{
+    if(i>0) r1.innerHTML+=`<div class="s-arrow">▶</div>`;
+    r1.appendChild(makeNode(s,i));
+  });
+  stations.slice(5).forEach((s,i)=>{
+    if(i>0) r2.innerHTML+=`<div class="s-arrow">▶</div>`;
+    r2.appendChild(makeNode(s,i+5));
+  });
+}
+function makeNode(s,idx){
+  const d=document.createElement('div');
+  d.className='s-node'+(idx>cur?' locked':'');
+  const cc=idx<cur?'s-circle done':idx===cur?'s-circle current':'s-circle locked';
+  const bg=idx<=cur?s.color:'';
+  d.innerHTML=`
+    <div class="${cc}" style="${bg?'background:'+bg:''}">
+      <div class="s-num">${idx+1}</div>${s.emoji}
+    </div>
+    <div class="s-label ${idx===cur?'cur':''}">${s.name}</div>`;
+  return d;
+}
+function renderStation(){
+  if(cur>=stations.length){showWin();return;}
+  const s=stations[cur];
+  document.getElementById('prog-bar').style.width=(cur/10*100)+'%';
+  document.getElementById('prog-text').textContent=`תחנה ${cur+1} / 10`;
+  document.getElementById('star-count').textContent=stars;
+  let html=`
+  <div class="station-banner" style="background:${s.bg}">
+    <div class="st-emoji-wrap">${s.emoji}</div>
+    <div class="st-info">
+      <div class="st-num">תחנה ${cur+1} מתוך 10</div>
+      <div class="st-name">${s.name}</div>
+      <div class="st-sub">${s.sub}</div>
+    </div>
+  </div>
+  <div class="station-body">`;
+  if(s.type==='entry'){
+    html+=`<div class="entry-steps"><div class="step-title">✅ שלבי הכניסה לגן:</div>`;
+    entryStepsData.forEach(step=>{
+      const ck=entryChecked[step.key];
+      html+=`<div class="step-item${ck?' checked':''}" id="step-${step.key}" onclick="toggleStep('${step.key}')">
+        <div class="step-emoji">${step.e}</div>
+        <div class="step-text">${step.t}</div>
+        <div class="step-check">${ck?'✓':''}</div>
+      </div>`;
+    });
+    html+=`</div><div class="section-divider"></div><div class="choice-wrap"><div class="choice-title">🎯 מה אני בוחר לעשות עכשיו?</div>
+    <div style="display:flex;flex-direction:column;gap:9px;">`;
+    entryChoicesData.forEach((c,i)=>{
+      const sel=entryChoiceSelected===i;
+      html+=`<div class="act-item${sel?' chosen':''}" onclick="pickEntryChoice(${i})">
+        <div class="act-emoji">${c.e}</div>
+        <div><div class="act-text">${c.t}</div><div class="act-sub">${c.s}</div></div>
+      </div>`;
+    });
+    html+=`</div></div>`;
+  }
+  if(s.type==='activity'){
+    html+=`<div class="choice-wrap"><div class="choice-title">🎨 בחר פעילות:</div>
+    <div class="choice-grid">
+      <div class="choice-item" onclick="pickInline(this)"><div class="choice-emoji">🎲</div><div class="choice-text">משחק ליד שולחן</div></div>
+      <div class="choice-item" onclick="pickInline(this)"><div class="choice-emoji">🏃</div><div class="choice-text">משחק במרחב</div></div>
+      <div class="choice-item" onclick="pickInline(this)"><div class="choice-emoji">🎨</div><div class="choice-text">יצירה</div></div>
+      <div class="choice-item" onclick="pickInline(this)"><div class="choice-emoji">🤫</div><div class="choice-text">שקט עם גננת</div></div>
+    </div></div>`;
+  }
+  html+=`<div class="section-divider"></div><div class="pills-wrap">
+    <div class="pill goal">${s.goal}</div>
+    <div class="pill reg">${s.regulation}</div>
+    <div class="pill reinf">⭐ ${s.reinforcement}</div>
+  </div>
+  <button class="btn-action" style="background:${s.bg}" onclick="completeStation()">${s.action}</button>
+  </div>`;
+  const card=document.getElementById('station-card');
+  card.innerHTML=html;
+  card.style.borderColor=s.color;
+  card.style.animation='none';
+  requestAnimationFrame(()=>{card.style.animation='';});
+}
+function toggleStep(key){
+  entryChecked[key]=!entryChecked[key];
+  const el=document.getElementById('step-'+key);
+  if(el){
+    el.classList.toggle('checked',entryChecked[key]);
+    el.querySelector('.step-check').textContent=entryChecked[key]?'✓':'';
+  }
+}
+function pickEntryChoice(i){
+  entryChoiceSelected=i;
+  // re-render to reflect selection
+  document.querySelectorAll('#station-card .act-item').forEach((el,j)=>{
+    el.classList.toggle('chosen', j===i);
+  });
+}
+function pickInline(el){
+  document.querySelectorAll('.choice-item').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+}
+function pickActivity(el, text){
+  document.querySelectorAll('.act-item').forEach(o=>o.classList.remove('chosen'));
+  el.classList.add('chosen');
+  document.getElementById('chosen-banner-val').textContent=text;
+  const banner=document.getElementById('chosen-banner');
+  banner.classList.add('show');
+}
+function completeStation(){
+  const s=stations[cur]; stars++;
+  const isLast=cur===stations.length-1;
+  document.getElementById('rew-emojis').textContent=s.reward_emojis;
+  document.getElementById('rew-title').textContent=s.name+' ✅';
+  document.getElementById('rew-msg').textContent=s.reward_msg;
+  document.getElementById('rew-stars').textContent='⭐'.repeat(Math.min(stars,10));
+  document.getElementById('rew-badge').textContent='💬 '+s.reinforcement;
+  const nb=document.getElementById('btn-next-rew');
+  if(isLast){
+    nb.textContent='🏆 לראות את הפרס!';
+    nb.style.background='linear-gradient(135deg,#FFD93D,#F59E0B)';
+  } else {
+    nb.textContent=`➡️ לתחנה ${cur+2}: ${stations[cur+1].name}`;
+    nb.style.background='linear-gradient(135deg,#6BCB77,#4CC9F0)';
+  }
+  document.getElementById('overlay').classList.add('show');
+  confetti();
+}
+function nextStation(){
+  document.getElementById('overlay').classList.remove('show');
+  cur++;
+  if(cur>=stations.length){showWin();return;}
+  entryChoiceSelected=null;
+  renderStation();
+  switchTab('track');
+}
+function showWin(){
+  document.getElementById('game').classList.remove('active');
+  document.getElementById('win').classList.add('active');
+  confetti(80); emojiRain();
+}
+function goHome(){
+  document.getElementById('game').classList.remove('active');
+  document.getElementById('welcome').classList.add('active');
+}
+function restartGame(){
+  cur=0; stars=0;
+  Object.keys(entryChecked).forEach(k=>delete entryChecked[k]);
+  entryChoiceSelected=null;
+  document.getElementById('win').classList.remove('active');
+  document.getElementById('welcome').classList.add('active');
+}
+function buildWhen(){
+  const container=document.getElementById('when-cards');
+  container.innerHTML='';
+  whenData.forEach(w=>{
+    const card=document.createElement('div');
+    card.className='when-card';
+    card.style.background=w.color;
+    let opts=w.options.map(o=>`
+      <div class="when-opt" onclick="this.classList.toggle('chosen')">
+        <div class="when-opt-e">${o.e}</div>
+        <div><div class="when-opt-t">${o.t}</div><div class="when-opt-s">${o.s}</div></div>
+      </div>`).join('');
+    card.innerHTML=`
+      <div class="when-header" onclick="this.parentElement.classList.toggle('open')">
+        <div class="when-big-e">${w.emoji}</div>
+        <div class="when-label-wrap">
+          <div class="when-label">${w.label}</div>
+          <div class="when-sub-label">${w.sub}</div>
+        </div>
+        <div class="when-arr">▶</div>
+      </div>
+      <div class="when-body">${opts}</div>`;
+    container.appendChild(card);
+  });
+}
+function confetti(n=45){
+  const cols=['#FF6B6B','#FFD93D','#6BCB77','#4CC9F0','#FF85A1','#818CF8','#F59E0B','#FF9F43'];
+  for(let i=0;i<n;i++){
+    setTimeout(()=>{
+      const p=document.createElement('div');
+      p.className='cp';
+      const sz=8+Math.random()*10;
+      p.style.cssText=`left:${Math.random()*100}vw;top:-15px;background:${cols[Math.floor(Math.random()*cols.length)]};width:${sz}px;height:${sz}px;border-radius:${Math.random()>.5?'50%':'2px'};animation-duration:${1.5+Math.random()*1.5}s;animation-delay:${Math.random()*.4}s;`;
+      document.body.appendChild(p);
+      setTimeout(()=>p.remove(),3000);
+    },i*35);
+  }
+}
+function emojiRain(){
+  const es=['⭐','🌟','🏆','🥇','🎉','🎊','😄','❤️','🌈','✨'];
+  for(let i=0;i<25;i++){
+    setTimeout(()=>{
+      const d=document.createElement('div');
+      d.style.cssText=`position:fixed;font-size:28px;left:${Math.random()*95}vw;top:-40px;pointer-events:none;z-index:500;animation:fall ${2+Math.random()*2}s ease-in forwards;`;
+      d.textContent=es[Math.floor(Math.random()*es.length)];
+      document.body.appendChild(d);
+      setTimeout(()=>d.remove(),5000);
+    },i*150);
+  }
+}
+</script>
+</body>
+</html>
